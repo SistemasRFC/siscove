@@ -2,7 +2,7 @@
 ob_start();
 ini_set('display_errors', true);
 error_reporting(E_ALL & ~E_WARNING & ~ E_DEPRECATED);
-require "/var/www/html/siscove/constantes.php";
+require getenv("CONSTANTES");
 
 class BaseController
 {
