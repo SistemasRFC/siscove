@@ -2,7 +2,7 @@
 ob_start();
 ini_set('display_errors', true);
 error_reporting(E_ALL & ~E_WARNING & ~ E_DEPRECATED);
-require getenv("CONSTANTES");
+require_once getenv("CONSTANTES");
 
 class BaseController
 {
