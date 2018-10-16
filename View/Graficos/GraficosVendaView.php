@@ -11,10 +11,10 @@
     <script src="js/GraficosVendaView.js"></script> 
 </HEAD>
 <BODY>
-    <table>
+    <table width="100%">
         <tr>
-            <td id="tdGrafico">
-                <div id="grafico" style="width:850px; height:500px;">
+            <td id="tdGrafico" align="center">
+                <div id="grafico" style="width:850px; height:500px; margin-top: 70">
                 </div>
             </td>
         </tr>

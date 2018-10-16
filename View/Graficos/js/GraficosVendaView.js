@@ -37,8 +37,8 @@ function MontaGrafico(data){
     };    
     var dataAdapter = new $.jqx.dataAdapter(source);
     var settings = {
-                title: "Vendas Por Mes",
-                description: "Estatisticas das Vendas Anual",
+                title: "Vendas Por M\u00eas",
+                description: "Estat\u00edsticas das Vendas Anual",
                 showLegend: true,
                 enableAnimations: true,
                 padding: { left: 20, top: 5, right: 20, bottom: 5 },
