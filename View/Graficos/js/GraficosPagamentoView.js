@@ -7,7 +7,7 @@ function CarregaGrafico(){
 //    $("#tdGrafico").html('<div id="grafico"></div>');
     $( "#dialogInformacao" ).jqxWindow('setContent', "Aguarde!");
     $( "#dialogInformacao" ).jqxWindow("open");
-    $.post('../../Controller/Graficos/GraficosVendaController.php',
+    $.post('../../Controller/Graficos/GraficosPagamentoController.php',
         {
             method: 'SelecionaDados'
         },
@@ -32,10 +32,9 @@ function MontaGrafico(data){
         datafields:
         [
             { name: 'DSC_MES', type: 'String' },
-            { name: 'VLR_VENDA_FECHADA', type: 'string' },
-            { name: 'VLR_VENDA_ABERTA', type: 'string' },
-            { name: 'VLR_VENDA_CANCELADA', type: 'string' },
-            { name: 'VLR_VENDA', type: 'string' }
+            { name: 'VLR_CONTA_PAGA', type: 'string' },
+            { name: 'VLR_CONTA_ABERTA', type: 'string' },
+            { name: 'VLR_CONTA', type: 'string' }
         ]
     };    
     var dataAdapter = new $.jqx.dataAdapter(source);
@@ -50,7 +49,7 @@ function MontaGrafico(data){
                 xAxis:
                 {
                     dataField: 'DSC_MES', 
-                    displayText: 'Mes: ',
+                    displayText: 'M\u00eas: ',
                     gridLines: { visible: true },
                     flip: false
                 },
@@ -70,10 +69,9 @@ function MontaGrafico(data){
                             columnsGapPercent: 500,
                             toolTipFormatSettings: { thousandsSeparator: ',' },
                             series: [
-                                    { dataField: 'VLR_VENDA_FECHADA', displayText: 'Vendas Fechadas' },
-                                    { dataField: 'VLR_VENDA_ABERTA', displayText: 'Vendas Abertas' },
-                                    { dataField: 'VLR_VENDA_CANCELADA', displayText: 'Vendas Canceladas' },
-                                    { dataField: 'VLR_VENDA', displayText: 'Valor Total' }
+                                    { dataField: 'VLR_CONTA_PAGA', displayText: 'Valor Pago' },
+                                    { dataField: 'VLR_CONTA_ABERTA', displayText: 'Valor Aberto' },
+                                    { dataField: 'VLR_CONTA', displayText: 'Valor Total' }
                                 ]
                         }
                     ]

@@ -1,9 +1,9 @@
 <?php
 include_once("../BaseController.php");
-include_once("../../Model/Graficos/GraficosVendaModel.php");
-class GraficosVendaController extends BaseController{
+include_once("../../Model/Graficos/GraficosPagamentoModel.php");
+class GraficosPagamentoController extends BaseController{
     
-    Public Function GraficosVendaController(){ 
+    Public Function GraficosPagamentoController(){ 
       eval("\$this->".BaseController::getMethod()."();");
     }
     
@@ -13,9 +13,9 @@ class GraficosVendaController extends BaseController{
     }
     
     Public Function SelecionaDados(){
-        $model = new GraficosVendaModel();
+        $model = new GraficosPagamentoModel();
         echo $model->SelecionaDados();
     }
     
 }
-new GraficosVendaController();
+new GraficosPagamentoController();
