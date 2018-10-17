@@ -39,8 +39,8 @@ function MontaGrafico(data){
     };    
     var dataAdapter = new $.jqx.dataAdapter(source);
     var settings = {
-                title: "Vendas Por M\u00eas",
-                description: "Estat\u00edsticas das Vendas Anual",
+                title: "Pagamentos Por M\u00eas",
+                description: "Estat\u00edsticas dos Pagamentos Anual",
                 showLegend: true,
                 enableAnimations: true,
                 padding: { left: 20, top: 5, right: 20, bottom: 5 },
