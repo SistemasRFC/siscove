@@ -37,7 +37,20 @@ $(document).ready(function () {
         theme: theme,
         isModal: true,
         autoOpen: false
-    });      
+    });
+    $("#DevolucaoNotaGarantiaForm").jqxWindow({ 
+        title: 'Devolver nota com garantia',
+        height: 450,
+        width: 1000,
+        maxWidth: 1200,
+        position: { x: 200, y: 150 },
+        animationType: 'fade',
+        showAnimationDuration: 500,
+        closeAnimationDuration: 500,
+        theme: theme,
+        isModal: true,
+        autoOpen: false
+    });
 //    $("#dialogJustificativa").jqxWindow({ 
 //        title: 'Justificativa',
 //        height: 250,

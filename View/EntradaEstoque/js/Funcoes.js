@@ -149,8 +149,10 @@ function CarregaDadosEntrada(){
                 if (data[1][0].IND_STATUS_REFERENCIA=='A'){
                     $("#btnConsultarNota").show();
                     $("#btnDevolucaoNota").hide();
+                    $("#btnDevolucaoNotaGarantia").hide();
                 }else{
                     $("#btnDevolucaoNota").show();
+                    $("#btnDevolucaoNotaGarantia").show();
                 }
             }
             $("#indEntrada").change();
@@ -168,14 +170,10 @@ function MontaDadosEntrada(nmeFornecedor, nroNotaFiscal, dtaEntrada, vlrTotal, d
                    "Depósito: "+dscDeposito+"<br>"+
                    "Valor: "+vlrTotal;
     var div = '';
-    if ($('#jqxTabsEntradas').jqxTabs('selectedItem')==1){
-        div = 'dadosProduto';     
-    }else if ($('#jqxTabsEntradas').jqxTabs('selectedItem')==2){
-        div = 'dadosPagamento';
-    }           
-    $("#"+div).hide();    
-    $("#"+div).html(dadosCliente);      
-    $("#"+div).show('slow');
+    div = 'dadosProduto';     
+    $("."+div).hide();    
+    $("."+div).html(dadosCliente);      
+    $("."+div).show('slow');
     $("input[type='button']").jqxButton({theme: theme}); 
 }
 
@@ -511,6 +509,68 @@ function DevolverNota(){
         {method: 'DevolverNota',
         codVenda: $("#nroSequencial").val(),
         nroSequencial: $("#nroSequencial").val()
+        }, function(data){
+
+        data = eval('('+data+')');
+        if (data[0]){
+            $( "#dialogInformacao" ).jqxWindow('setContent', 'Nota Devolvida com sucesso!');
+            window.setTimeout(function (){
+                $( "#dialogInformacao" ).jqxWindow('close');
+            }, '2000');
+            CarregaDadosEntrada();
+        }else{
+            $( "#dialogInformacao" ).jqxWindow('setContent', 'Erro ao Devolver Nota! '+data[1]);
+        }
+    });
+}
+
+function CarregaListaProdutosEntrada(nroSequencial){
+    $("#DevolucaoNotaGarantiaForm").jqxWindow("open");
+    $("#tdListaProdutosEntrada").html('');
+    $("#tdListaProdutosEntrada").html('<div id="ListaProdutosEntrada"></div>');
+    $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',{
+        method:'ListarProdutosEntrada',
+        nroSequencial: nroSequencial
+    },
+    function(ListaProduto){
+        ListaProduto = eval('('+ListaProduto+')');
+        lista = '<table width="100%">';
+        for (i=0;i<ListaProduto[1].length;i++){
+            lista += "<tr><td style='font-size: 11px;font-family: Verdana, sans-serif;margin: 0;padding: 0;text-align: left;'>"+ListaProduto[1][i].DSC_PRODUTO+"</td>\n\
+                          <td><input type='text' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'></td></tr>";
+        }
+        lista += '</table>';
+        $("#ListaProdutosEntrada").html(lista);
+    }); 
+     
+}
+
+function DevolverNotaGarantia(){
+    $( "#dialogInformacao" ).jqxWindow('setContent', "Aguarde!");
+    $( "#dialogInformacao" ).jqxWindow("open");   
+    if ($("#nroCNPJ").val().trim()==''){
+        $( "#dialogInformacao" ).jqxWindow('setContent', "Este fornecedor não possui CNPJ!");
+        return false;
+    }
+    if ($("#txtLogradouro").val().trim() == '' || $("#txtComplemento").val().trim() == '' || $("#nmeBairro").val().trim() == '' || $("#nmeCidade").val().trim() == '' || $("#sglUf").val().trim() == '' || $("#nroCep").val().trim() == ''){
+        $( "#dialogInformacao" ).jqxWindow('setContent', "Este fornecedor não possui endereço ou está incompleto!");
+        return false;
+    }
+    if ($("#nroIE").val().trim() == ''){
+        $( "#dialogInformacao" ).jqxWindow('setContent', "Este fornecedor não possui inscrição estadual!");
+        return false;
+    }
+    var codProdutos = "";
+    $('.qtdProdutoDevolucao').each(function(index, value){
+        var id = value.id;
+        codProdutos = codProdutos+id+"|"+value.value;
+    });
+    $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',
+        {method: 'DevolverNotaGarantia', // tem q criar ainda
+        codVenda: $("#nroSequencial").val(), // ta certo isso?
+        nroSequencial: $("#nroSequencial").val(),
+        codProdutos: codProdutos
+        //produtos que serão devolvidos e as quantidades(array)
         }, function(data){
 
         data = eval('('+data+')');

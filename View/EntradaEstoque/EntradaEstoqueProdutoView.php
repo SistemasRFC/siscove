@@ -5,7 +5,7 @@
         <table width="100%">
             <tr>
                 <td>
-                  <div id="dadosProduto" style="border:1px solid;display:none;">
+                  <div class="dadosProduto" style="border:1px solid;display:none;">
                   </div>
                 </td>
             </tr>

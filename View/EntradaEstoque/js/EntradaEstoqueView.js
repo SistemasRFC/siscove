@@ -3,6 +3,7 @@ $(document).ready(function(){
     $('#jqxTabsEntradas').jqxTabs({ width: '90%', position: 'top'});
     $('#settings div').css('margin-top', '10px');
     $("#btnDevolucaoNota").hide();
+    $("#btnDevolucaoNotaGarantia").hide();
     $("#btnConsultarNota").hide();
     $('#jqxTabsEntradas').jqxTabs({ selectionTracker: true, disabled:true});
     $('#jqxTabsEntradas').jqxTabs({ animationType: 'fade' });
@@ -34,6 +35,12 @@ $(document).ready(function(){
     
     $("#btnDevolucaoNota").click(function(){
         DevolverNota();
+    });
+    $("#btnDevolucaoNotaGarantia").click(function(){
+        CarregaListaProdutosEntrada($("#nroSequencial").val());
+    });
+    $("#btnDevolverNotaGarantia").click(function(){
+        DevolverNotaGarantia();
     });
     $("#btnConsultarNota").click(function(){
         ConsultarNota();

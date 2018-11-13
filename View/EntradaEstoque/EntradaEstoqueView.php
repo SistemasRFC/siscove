@@ -23,6 +23,7 @@
         <tr>
             <td>
                 <input type='button' id='btnDevolucaoNota' value='Devolução de Nota'>
+                <input type='button' id='btnDevolucaoNotaGarantia' value='Devolução de Nota com garantia'>
                 <input type='button' id='btnConsultarNota' value='Consultar Nota'>
                 <input type='button' id='btnNovaEntrada' value='Nova Entrada'>
                 <input type='button' id='btnSalvarEntrada' value='Salvar'>
@@ -109,6 +110,29 @@
                 <tr>
                     <td id="tdListaEntradasFechadas" colspan="2">
                         <div id="ListaEntradasFechadas"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>            
+    </div>
+    <div id="DevolucaoNotaGarantiaForm">
+        <div id="windowHeader2">
+        </div>
+        <div id="windowContent2">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <div class="dadosProduto" style="border:1px solid;display:none;">
+                    </td>
+                </tr>
+                <tr>
+                    <td id="tdListaProdutosEntrada" colspan="2">
+                        <div id="ListaProdutosEntrada"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="btnDevolverNotaGarantia" value="Devolver Nota">
                     </td>
                 </tr>
             </table>
