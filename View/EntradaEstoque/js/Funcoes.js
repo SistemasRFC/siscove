@@ -524,15 +524,15 @@ function DevolverNota(){
     });
 }
 
-function CarregaListaProdutosEntrada(nroSequencial){
+function CarregaListaProdutosEntrada(){
     $("#DevolucaoNotaGarantiaForm").jqxWindow("open");
-    $("#tdListaProdutosEntrada").html('');
-    $("#tdListaProdutosEntrada").html('<div id="ListaProdutosEntrada"></div>');
-    $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',{
-        method:'ListarProdutosEntrada',
-        nroSequencial: nroSequencial
-    },
-    function(ListaProduto){
+    $("#tdListaProdutosEntradaDevolucao").html('');
+    $("#tdListaProdutosEntradaDevolucao").html('<div id="ListaProdutosEntradaDevolucao"></div>');
+    $.post('../../Controller/EntradaEstoque/EntradaEstoqueProdutoController.php',
+    {
+        method:'ListarDadosProdutosEntrada',
+        nroSequencial: $("#nroSequencial").val()
+    }, function(ListaProduto){
         ListaProduto = eval('('+ListaProduto+')');
         lista = '<table width="100%">';
         for (i=0;i<ListaProduto[1].length;i++){
@@ -540,7 +540,8 @@ function CarregaListaProdutosEntrada(nroSequencial){
                           <td><input type='text' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'></td></tr>";
         }
         lista += '</table>';
-        $("#ListaProdutosEntrada").html(lista);
+        console.log(lista);
+        $("#ListaProdutosEntradaDevolucao").html(lista);
     }); 
      
 }

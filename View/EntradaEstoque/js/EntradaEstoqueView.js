@@ -37,7 +37,7 @@ $(document).ready(function(){
         DevolverNota();
     });
     $("#btnDevolucaoNotaGarantia").click(function(){
-        CarregaListaProdutosEntrada($("#nroSequencial").val());
+        CarregaListaProdutosEntrada();
     });
     $("#btnDevolverNotaGarantia").click(function(){
         DevolverNotaGarantia();

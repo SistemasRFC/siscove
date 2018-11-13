@@ -126,8 +126,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td id="tdListaProdutosEntrada" colspan="2">
-                        <div id="ListaProdutosEntrada"></div>
+                    <td id="tdListaProdutosEntradaDevolucao">
                     </td>
                 </tr>
                 <tr>
