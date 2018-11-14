@@ -41,9 +41,9 @@ $(document).ready(function () {
     $("#DevolucaoNotaGarantiaForm").jqxWindow({ 
         title: 'Devolver nota com garantia',
         height: 450,
-        width: 1000,
+        width: 700,
         maxWidth: 1200,
-        position: { x: 200, y: 150 },
+        position: { x: 400, y: 150 },
         animationType: 'fade',
         showAnimationDuration: 500,
         closeAnimationDuration: 500,

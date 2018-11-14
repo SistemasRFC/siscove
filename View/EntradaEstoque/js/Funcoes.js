@@ -534,14 +534,20 @@ function CarregaListaProdutosEntrada(){
         nroSequencial: $("#nroSequencial").val()
     }, function(ListaProduto){
         ListaProduto = eval('('+ListaProduto+')');
-        lista = '<table width="100%">';
-        lista += '<tr><td><b>Produtos<b></td><td><b>Quantidade a ser devolvida<b></td></tr>';
+        lista = "<table width='100%' style='margin: 1;text-align: left;border-collapse: collapse;'>";
+        lista += "<tr style='background-color: #cccccc;padding: 8px;'>\n\
+                    <th style='border: 1px solid #aaaaaa;'>Produto</th>\n\
+                    <th style='border: 1px solid #aaaaaa;'>Marca</th>\n\
+                    <th style='border: 1px solid #aaaaaa;'>Quantidade a ser devolvida</th>\n\
+                  </tr>";
         for (i=0;i<ListaProduto[1].length;i++){
-            lista += "<tr><td style='font-size: 11px;font-family: Verdana, sans-serif;margin: 0;padding: 0;text-align: left;'>"+ListaProduto[1][i].DSC_PRODUTO+"</td>\n\
-                          <td><input type='text' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'></td></tr>";
+            lista += "<tr>\n\
+                        <td style='border: 1px solid #aaaaaa;font-size: 15px;padding: 5px;text-align: left;width: 39%;'>"+ListaProduto[1][i].DSC_PRODUTO+"</td>\n\
+                        <td style='border: 1px solid #aaaaaa;font-size: 15px;padding: 5px;text-align: left;width: 20%;'>"+ListaProduto[1][i].DSC_MARCA+"</td>\n\
+                        <td style='border: 1px solid #aaaaaa;width: 41%;'><input type='text' style='border: 2px solid #aaaaaa; width: 100%;border-radius: 3px;' placeholder='Informe a quantidade' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'></td>\n\
+                      </tr>";
         }
         lista += '</table>';
-        console.log(lista);
         $("#ListaProdutosEntradaDevolucao").html(lista);
     }); 
      
@@ -717,6 +723,7 @@ $(function(){
             $(".TabelaPai").removeClass("disabledTable");
             $("#btnConsultarNota").hide();
             $("#btnDevolucaoNota").hide();
+            $("#btnDevolucaoNotaGarantia").hide();
         }
     });
 });

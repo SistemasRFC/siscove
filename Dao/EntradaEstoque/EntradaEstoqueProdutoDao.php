@@ -10,6 +10,7 @@ class EntradaEstoqueProdutoDao extends BaseDao
         $nroSequencial = $nroSequencial==NULL?filter_input(INPUT_POST, 'nroSequencial', FILTER_SANITIZE_STRING):$nroSequencial;
         $sql_lista = "SELECT EE.COD_PRODUTO,
                              P.DSC_PRODUTO,
+                             M.DSC_MARCA,
                              EE.QTD_ENTRADA,
                              EE.VLR_UNITARIO,
                              EE.VLR_MINIMO,
@@ -18,6 +19,8 @@ class EntradaEstoqueProdutoDao extends BaseDao
                         FROM EN_ENTRADA_ESTOQUE EE
                        INNER JOIN EN_PRODUTO P
                           ON EE.COD_PRODUTO = P.COD_PRODUTO
+                        LEFT JOIN EN_MARCA M
+                          ON P.COD_MARCA = M.COD_MARCA
                        WHERE EE.NRO_SEQUENCIAL = ".$nroSequencial;
         return $this->selectDB("$sql_lista", false);
     }
