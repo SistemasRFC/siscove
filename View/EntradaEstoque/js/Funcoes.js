@@ -535,6 +535,7 @@ function CarregaListaProdutosEntrada(){
     }, function(ListaProduto){
         ListaProduto = eval('('+ListaProduto+')');
         lista = '<table width="100%">';
+        lista += '<tr><td><b>Produtos<b></td><td><b>Quantidade a ser devolvida<b></td></tr>';
         for (i=0;i<ListaProduto[1].length;i++){
             lista += "<tr><td style='font-size: 11px;font-family: Verdana, sans-serif;margin: 0;padding: 0;text-align: left;'>"+ListaProduto[1][i].DSC_PRODUTO+"</td>\n\
                           <td><input type='text' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'></td></tr>";
