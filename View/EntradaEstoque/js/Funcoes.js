@@ -544,7 +544,10 @@ function CarregaListaProdutosEntrada(){
             lista += "<tr>\n\
                         <td style='border: 1px solid #aaaaaa;font-size: 15px;padding: 5px;text-align: left;width: 39%;'>"+ListaProduto[1][i].DSC_PRODUTO+"</td>\n\
                         <td style='border: 1px solid #aaaaaa;font-size: 15px;padding: 5px;text-align: left;width: 20%;'>"+ListaProduto[1][i].DSC_MARCA+"</td>\n\
-                        <td style='border: 1px solid #aaaaaa;width: 41%;'><input type='text' style='border: 2px solid #aaaaaa; width: 100%;border-radius: 3px;' placeholder='Informe a quantidade' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'></td>\n\
+                        <td style='border: 1px solid #aaaaaa;width: 41%;'>\n\
+                            <input type='text' style='border: 2px solid #aaaaaa; width: 100%;border-radius: 3px;' placeholder='Informe a quantidade' class='qtdProdutoDevolucao' name='qtdProdutoDevolucao' id='"+ListaProduto[1][i].COD_PRODUTO+"'>\n\
+                            <input type='hidden' id='qtdProdutoDevolucao' value='"+ListaProduto[1][i].QTD_ENTRADA+"'>\n\
+                        </td>\n\
                       </tr>";
         }
         lista += '</table>';
@@ -570,9 +573,15 @@ function DevolverNotaGarantia(){
     }
     var codProdutos = "";
     $('.qtdProdutoDevolucao').each(function(index, value){
+        console.log(value);
         var id = value.id;
-        codProdutos = codProdutos+id+"|"+value.value;
+        if(value.value !== ''){
+            if(value.value <= $('#qtdProdutoDevolucao').val()){
+                codProdutos = codProdutos+id+"|"+value.value+";";
+            }
+        } 
     });
+    console.log(codProdutos);
     $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',
         {method: 'DevolverNotaGarantia', // tem q criar ainda
         codVenda: $("#nroSequencial").val(), // ta certo isso?
