@@ -573,7 +573,6 @@ function DevolverNotaGarantia(){
     }
     var codProdutos = "";
     $('.qtdProdutoDevolucao').each(function(index, value){
-        console.log(value);
         var id = value.id;
         if(value.value !== ''){
             if(value.value <= $('#qtdProdutoDevolucao').val()){
@@ -581,7 +580,6 @@ function DevolverNotaGarantia(){
             }
         } 
     });
-    console.log(codProdutos);
     $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',
         {method: 'DevolverNotaGarantia', // tem q criar ainda
         codVenda: $("#nroSequencial").val(), // ta certo isso?

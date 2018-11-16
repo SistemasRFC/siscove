@@ -46,6 +46,9 @@ function MontaTabela(data){
     tabela += '         Produto';
     tabela += '     </td>';
     tabela += '     <td class="TDTitulo">';
+    tabela += '         Fornecedor';
+    tabela += '     </td>';
+    tabela += '     <td class="TDTitulo">';
     tabela += '         Marca';
     tabela += '     </td>';
     tabela += '     <td class="TDTitulo">';
@@ -67,6 +70,7 @@ function MontaTabela(data){
         tabela += '    <td><a href="javascript:mostraTR('+listaEstoque[i].COD_PRODUTO+');">';
         tabela += '           <img class="imagem" id="imagem'+listaEstoque[i].COD_PRODUTO+'" src="../../Resources/images/plus.png" width="15px" height="15px"></a></td>';
         tabela += '    <td>'+listaEstoque[i].DSC_PRODUTO+'</td>';
+        tabela += '    <td>'+listaEstoque[i].DSC_FORNECEDOR+'</td>';
         tabela += '    <td>'+listaEstoque[i].DSC_MARCA+'</td>';
         tabela += '    <td>'+listaEstoque[i].IND_TIPO_PRODUTO+'</td>';
         tabela += '    <td>'+listaEstoque[i].QTD_ESTOQUE+'</td>';
@@ -76,6 +80,7 @@ function MontaTabela(data){
         tabela += '    <td colspan="3" width="100%">';
         tabela += '         <table width="100%" style="border: 1px solid;">';
         tabela += '             <tr>';
+        tabela += '                 <td class="TDTitulo">Codigo</td>';
         tabela += '                 <td class="TDTitulo">Data da Entrada</td>';
         tabela += '                 <td class="TDTitulo" align="right">Preço Custo</td>';
         tabela += '                 <td class="TDTitulo" align="right">Preço Mínimo</td>';
@@ -85,6 +90,7 @@ function MontaTabela(data){
         for(j=0;j<listaEntradasEstoque.length;j++){
             if(listaEntradasEstoque[j].COD_PRODUTO==listaEstoque[i].COD_PRODUTO){
                 tabela += ' <tr>';
+                tabela += '    <td>'+listaEntradasEstoque[j].NRO_SEQUENCIAL+'</td>';
                 tabela += '    <td>'+listaEntradasEstoque[j].DTA_ENTRADA+'</td>';
                 tabela += '    <td align="right">'+listaEntradasEstoque[j].VLR_UNITARIO+'</td>';
                 tabela += '    <td align="right">'+listaEntradasEstoque[j].VLR_MINIMO+'</td>';

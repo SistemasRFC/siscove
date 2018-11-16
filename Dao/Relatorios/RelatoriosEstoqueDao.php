@@ -151,7 +151,8 @@ class RelatoriosEstoqueDao extends BaseDao
                          WHEN IND_TIPO_PRODUTO = 'N' THEN 'Novo'
                     ELSE '' END AS IND_TIPO_PRODUTO,
                     P.NRO_ARO_PNEU,
-                    SUM(COALESCE(E.QTD_ESTOQUE,0)) AS QTD_ESTOQUE
+                    SUM(COALESCE(E.QTD_ESTOQUE,0)) AS QTD_ESTOQUE,
+                    DSC_FORNECEDOR
                FROM EN_PRODUTO P
                LEFT JOIN EN_MARCA M
                  ON P.COD_MARCA = M.COD_MARCA
@@ -161,6 +162,10 @@ class RelatoriosEstoqueDao extends BaseDao
                  ON EE.COD_PRODUTO = E.COD_PRODUTO
                 AND EE.NRO_SEQUENCIAL = E.NRO_SEQUENCIAL
                 AND E.QTD_ESTOQUE>0
+               LEFT JOIN EN_ENTRADA ET
+                 ON EE.NRO_SEQUENCIAL = ET.NRO_SEQUENCIAL
+               LEFT JOIN EN_FORNECEDOR F
+                 ON ET.COD_FORNECEDOR = F.COD_FORNECEDOR
               WHERE P.COD_CLIENTE_FINAL = $codClienteFinal
                 AND P.TPO_PRODUTO = 'P'
                 AND E.QTD_ESTOQUE>0";

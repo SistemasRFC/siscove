@@ -336,5 +336,198 @@ class EntradaEstoqueModel extends BaseModel
         }
         return $result;
     }
+    
+    Public Function DevolverNotaGarantia(){
+        $VendaReferenciaDevolucaoModel = new VendaReferenciaDevolucaoModel();
+        $result = $VendaReferenciaDevolucaoModel->RetornaVendaReferenciaDevolucao(false);
+        if ($result[0]){                
+            if ($result[1][0]['NRO_SEQUENCIAL']>0){
+                $nroSequencial = $result[1][0]['NRO_SEQUENCIAL'];
+                if ($result[1][0]['IND_STATUS_REFERENCIA']=='A'){
+                    $result[0]=false;
+                    $result[1]="Esta venda já possui uma Nota Devolvida e Autorizada.";
+                }else if ($result[1][0]['IND_STATUS_REFERENCIA']=='E'){
+                    $result = static::DevolverNotaGarantiaMercadoria($nroSequencial);
+                    if ($result[0]){
+                        $result = $VendaReferenciaDevolucaoModel->UpdateVendaReferenciaDevolucao($nroSequencial, 'A');
+                    }
+                }                
+            }else{
+                $result = $VendaReferenciaDevolucaoModel->InsertVendaReferenciaDevolucao(false);
+                if ($result[0]){
+                    $nroSequencial = $result[2];
+                    $result = static::DevolverNotaGarantiaMercadoria($nroSequencial);
+                    if (!$result[0]){
+                        $VendaReferenciaDevolucaoModel->UpdateVendaReferenciaDevolucao($nroSequencial, 'E');
+                    }
+                }
+            }
+        }
+        return json_encode($result);
+    }
+    
+    Public Function DevolverNotaGarantiaMercadoria($nroSequencial){
+        $NfeDao = new EntradaEstoqueDao();
+        $server = URL;
+        $login = TOKEN;
+        $password = "";
+        $dadosVenda = $this->CarregaDadosEntradaEstoque(false);
+        if (AMBIENTE=='HMG'){
+            $destinatario = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+        }else{
+            $destinatario = $dadosVenda[1][0]['DSC_CLIENTE'];
+        }
+        $ref = "D".filter_input(INPUT_POST, 'codVenda', FILTER_SANITIZE_NUMBER_INT)."00".$nroSequencial;
+        $vlrTotal = static::RetornaValorTotal();
+        $vlrOriginal = $vlrTotal+0.01;
+        
+        $nfe = array (
+            "natureza_operacao" => "Devolução",
+            "forma_pagamento" => "0",
+            "data_emissao" => $dadosVenda[1][0]['DTA_EMISSAO_NOTA'],
+            "data_entrada_saida" => $dadosVenda[1][0]['DTA_EMISSAO_NOTA'],
+            "tipo_documento" => "1",
+            "finalidade_emissao" => "1",
+            "cnpj_emitente" => "26441410000161",
+            "inscricao_estadual_emitente" => "767247800177",
+            "local_destino" => $dadosVenda[1][0]['SGL_UF']=='DF'?"1":"2",
+            "nome_destinatario" => $destinatario,
+            "cnpj_destinatario" => $dadosVenda[1][0]['NRO_CNPJ'],
+            "inscricao_estadual_destinatario" => $dadosVenda[1][0]['NRO_IE'],
+            "logradouro_destinatario" => $dadosVenda[1][0]['TXT_LOGRADOURO'],
+            "numero_destinatario" => $dadosVenda[1][0]['TXT_COMPLEMENTO'],
+            "bairro_destinatario" => $dadosVenda[1][0]['NME_BAIRRO'],
+            "municipio_destinatario" => $dadosVenda[1][0]['TXT_LOCALIDADE'],
+            "uf_destinatario" => $dadosVenda[1][0]['SGL_UF'],
+            "pais_destinatario" => "Brasil",
+            "cep_destinatario" => $dadosVenda[1][0]['NRO_CEP'],
+            "icms_base_calculo" => "0",
+            "icms_valor_total" => "0",
+            "icms_base_calculo_st" => "0",
+            "icms_valor_total_st" => "0",
+            "icms_modalidade_base_calculo" => "0",
+            "icms_valor" => "0",
+            "valor_frete" => "0.0000",
+            "valor_seguro" => "0",
+            "valor_total" => str_replace(',', '.', str_replace('.', '', $vlrTotal)),
+            "valor_produtos" => str_replace(',', '.', str_replace('.', '', $vlrTotal)),
+            "valor_ipi" => "0",
+            "modalidade_frete" => "0",
+            "informacoes_adicionais_contribuinte" => "Não Incidência ICMS conforme Decisão...",
+            "items" => static::RetornaProdutosGarantiaNfe($dadosVenda[1][0]['SGL_UF']),
+            "valor_original_fatura" => $vlrOriginal,
+            "valor_desconto_fatura" => "0.01",
+            "valor_liquido_fatura" => str_replace(',', '.', str_replace('.', '', $vlrTotal)), 
+            "numero_fatura" => 1,
+            "notas_referenciadas" => array(
+                array(
+                    "chave_nfe" => $dadosVenda[1][0]['NRO_NOTA_FISCAL']
+                )
+            )
+        );        
+//        var_dump($nfe); die;
+//        echo json_encode($nfe); die;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $server."/v2/nfe?ref=" . $ref);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($nfe));        
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array());
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+        
+        $body = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch); 
+        if ($http_code!=202){
+            switch ($http_code){
+                case 422:
+                    $result[0]=false;
+                    $result[1]="Chave inválida!";
+                    $NfeDao->RegistraErrosDevolucao($ref, $result[1]);
+                    break;  
+                case 500:
+                    $result[0]=false;
+                    $result[1]="Erro no Servidor!";
+                    $NfeDao->RegistraErrosDevolucao($ref, $result[1]);
+                    break; 
+                default:
+                    $result[0] = false;
+                    $result[1] = "Foram encontrados ".count($body->erros)." erros, listados abaixo!";
+                    for ($i=0;$i<count($body->erros);$i++){
+                        $result[2][]=$i+1 . " - ".$body->erros[$i]->mensagem."<BR>";
+                        $NfeDao->RegistraErrosDevolucao($ref, $body->erros[$i]->mensagem);
+                    }
+                    break;
+            }
+        }else{
+            $produtosDao = new EntradaEstoqueProdutoDao();
+            $listaProdutos = $produtosDao->ListarDadosProdutosEntrada($nroSequencial);
+            if ($listaProdutos[0]){
+                for ($i=0;$i<count($listaProdutos[1]);$i++){
+                    $produtosDao->AtualizaEstoque('REMOVE', 
+                                                  $listaProdutos[1][$i]['QTD_ENTRADA'], 
+                                                  $listaProdutos[1][$i]['COD_PRODUTO'], 
+                                                  $listaProdutos[1][$i]['NRO_SEQUENCIAL']);  
+                }
+            }
+            $result[0]=true;
+        }
+        return $result;
+    }
+    
+    Public Static Function RetornaProdutosGarantiaNfe($sglUf){
+        $NfeDao = new EntradaEstoqueDao();
+        $produtosVendas = $NfeDao->RetornaMercadoriasVenda();
+        $codProdutos = $NfeDao->Populate('codProdutos');
+        $arrProdutos = explode(';', $codProdutos);
+        $item = 0;
+        for ($i=0;$i<count($produtosVendas[1]);$i++){
+            for ($j=0;$j<count($arrProdutos);$j++){
+                $registro = explode('|', $arrProdutos[$j]);
+                if ($registro[0]==$produtosVendas[1][$i]['COD_PRODUTO'] && (int) $registro[1]>0){
+                    $item = $item+1;
+                    if ($produtosVendas[1][$i]['TPO_PRODUTO']=='S'){
+                        $tpoUnidade = "SV";
+                    }else{
+                        $tpoUnidade = "UN";
+                    }
+                    $vlrSoma = ($produtosVendas[1][$i]['VLR_VENDA'])*$registro[1];
+                    $produtos[$item-1] = array("numero_item" => $item.'',
+                                        "codigo_produto" => $produtosVendas[1][$i]['COD_PRODUTO'],
+                                        "descricao" => $produtosVendas[1][$i]['DSC_PRODUTO'],
+                                        "cfop" => $sglUf=='DF'?"5949":"6949",//$produtosVendas[1][$i]['COD_CFOP'],
+                                        "unidade_comercial" => $tpoUnidade,
+                                        "quantidade_comercial" => $registro[1],
+                                        "valor_unitario_comercial" => number_format($produtosVendas[1][$i]['VLR_VENDA'],2,'.',''),
+                                        "valor_unitario_tributavel" => number_format($produtosVendas[1][$i]['VLR_VENDA'],2,'.',''),
+                                        "unidade_tributavel" => "un",
+                                        "codigo_ncm" => $produtosVendas[1][$i]['COD_NCM'],
+                                        "quantidade_tributavel" => $registro[1],
+                                        "valor_bruto" => number_format($vlrSoma,2,'.',''),
+                                        "icms_situacao_tributaria" => $produtosVendas[1][$i]['DSC_CODIGO_ICMS'],
+                                        "icms_origem" => $produtosVendas[1][$i]['COD_ICMS_ORIGEM'],
+                                        "pis_situacao_tributaria" => $produtosVendas[1][$i]['DSC_CODIGO_PIS'],
+                                        "cofins_situacao_tributaria" => $produtosVendas[1][$i]['DSC_CODIGO_COFINS']);                
+                }
+            }
+        } 
+//        var_dump($produtos); die;
+        return $produtos;
+    }
+    
+    Public Function RetornaValorTotal(){
+        $NfeDao = new EntradaEstoqueDao();
+        $produtosVendas = $NfeDao->RetornaMercadoriasVenda();
+        $codProdutos = $NfeDao->Populate('codProdutos');
+        $arrProdutos = explode(';', $codProdutos);
+        for ($i=0;$i<count($produtosVendas[1]);$i++){
+            for ($j=0;$j<count($arrProdutos);$j++){
+                $registro = explode('|', $arrProdutos[$j]);
+                if ($registro[0]==$produtosVendas[1][$i]['COD_PRODUTO'] && (int) $registro[1]>0){
+                    $vlrSoma = ($produtosVendas[1][$i]['VLR_VENDA'])*$registro[1];               
+                }
+            }
+        } 
+        return str_replace(',', '.', str_replace('.', '', $vlrSoma));
+    }
 }
-?>

@@ -46,6 +46,11 @@ class EntradaEstoqueController extends BaseController
         $model = new EntradaEstoqueModel();
         echo $model->ConsultarNota();        
     }
+
+    Public Function DevolverNotaGarantia(){
+        $model = new EntradaEstoqueModel();
+        echo $model->DevolverNotaGarantia();        
+    }
 }
 $entradaEstoqueController = new EntradaEstoqueController();
 ?>
