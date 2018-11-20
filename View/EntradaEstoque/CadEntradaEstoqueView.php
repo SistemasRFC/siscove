@@ -2,7 +2,7 @@
 <table width="100%" align="left">
     <tr>
         <td>
-            <table width="100%" align="left" class="TabelaPai">
+            <table width="100%" align="left">
                 <tr>
                   <td>Selecione o Fornecedor</td>
                 </tr>
