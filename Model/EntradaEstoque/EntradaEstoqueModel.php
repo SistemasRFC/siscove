@@ -3,6 +3,7 @@ include_once("../../Model/BaseModel.php");
 include_once("../../Dao/EntradaEstoque/EntradaEstoqueDao.php");
 include_once("../../Dao/EntradaEstoque/EntradaEstoqueProdutoDao.php");
 include_once("../../Model/VendaReferenciaDevolucao/VendaReferenciaDevolucaoModel.php");
+include_once("../../Model/Vendas/VendasModel.php");
 class EntradaEstoqueModel extends BaseModel
 {
     Public Function EntradaEstoqueModel(){
@@ -286,13 +287,13 @@ class EntradaEstoqueModel extends BaseModel
                             switch ($body->status) {
                                 case "erro_autorizacao":
                                     if (property_exists($body, 'mensagem_sefaz')){
-                                        $VendaReferenciaModel = new VendaReferenciaModel();
+                                        $VendaReferenciaModel = new VendaReferenciaDevolucaoModel();
                                         $VendaModel = new VendasModel();
                                         $NfeDao = new NfeDao();
-                                        $result = $VendaReferenciaModel->RetornaVendaReferencia(false);
+                                        $result = $VendaReferenciaModel->RetornaVendaReferenciaDevolucao(false);
                                         if ($result[0]){                    
                                             $nroSequencial = $result[1][0]['NRO_SEQUENCIAL'];
-                                            $result = $VendaReferenciaModel->UpdateVendaReferencia($nroSequencial, 'E');
+                                            $result = $VendaReferenciaModel->UpdateVendaReferenciaDevolucao($nroSequencial, 'E');
                                             $VendaModel->ReabrirVenda();
                                         }                
                                         $retorno[0]=false;
@@ -375,7 +376,7 @@ class EntradaEstoqueModel extends BaseModel
         if (AMBIENTE=='HMG'){
             $destinatario = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
         }else{
-            $destinatario = $dadosVenda[1][0]['DSC_CLIENTE'];
+            $destinatario = $dadosVenda[1][0]['DSC_FORNECEDOR'];
         }
         $ref = "D".filter_input(INPUT_POST, 'codVenda', FILTER_SANITIZE_NUMBER_INT)."00".$nroSequencial;
         $vlrTotal = static::RetornaValorTotal();
