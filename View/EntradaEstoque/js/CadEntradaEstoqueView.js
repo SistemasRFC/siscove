@@ -14,6 +14,7 @@ $(function() {
         $("#nroSequencial").val('');
         $("#btnDevolucaoNota").hide();
         $("#btnDevolucaoNotaGarantia").hide();
+        $("#btnCartaCorrecao").hide();
         $("#btnConsultarNota").hide();
         $("#dadosProduto").hide();
         $('#jqxTabsEntradas').jqxTabs('select', 0);

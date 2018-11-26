@@ -150,9 +150,11 @@ function CarregaDadosEntrada(){
                     $("#btnConsultarNota").show();
                     $("#btnDevolucaoNota").hide();
                     $("#btnDevolucaoNotaGarantia").hide();
+                    $("#btnCartaCorrecao").hide();
                 }else{
                     $("#btnDevolucaoNota").show();
                     $("#btnDevolucaoNotaGarantia").show();
+                    $("#btnCartaCorrecao").show();
                 }
             }
             $("#indEntrada").change();
@@ -731,6 +733,7 @@ $(function(){
             $("#btnConsultarNota").hide();
             $("#btnDevolucaoNota").hide();
             $("#btnDevolucaoNotaGarantia").hide();
+            $("#btnCartaCorrecao").hide();
         }
     });
 });

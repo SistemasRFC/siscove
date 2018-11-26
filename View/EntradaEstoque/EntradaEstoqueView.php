@@ -24,6 +24,7 @@
             <td>
                 <input type='button' id='btnDevolucaoNota' value='Devolução de Nota'>
                 <input type='button' id='btnDevolucaoNotaGarantia' value='Devolução de Nota com garantia'>
+                <input type='button' id='btnCartaCorrecao' value='Carta de Correção'>
                 <input type='button' id='btnConsultarNota' value='Consultar Nota'>
                 <input type='button' id='btnNovaEntrada' value='Nova Entrada'>
                 <input type='button' id='btnSalvarEntrada' value='Salvar'>

@@ -4,6 +4,7 @@ $(document).ready(function(){
     $('#settings div').css('margin-top', '10px');
     $("#btnDevolucaoNota").hide();
     $("#btnDevolucaoNotaGarantia").hide();
+    $("#btnCartaCorrecao").hide();
     $("#btnConsultarNota").hide();
     $('#jqxTabsEntradas').jqxTabs({ selectionTracker: true, disabled:true});
     $('#jqxTabsEntradas').jqxTabs({ animationType: 'fade' });
@@ -38,6 +39,9 @@ $(document).ready(function(){
     });
     $("#btnDevolucaoNotaGarantia").click(function(){
         CarregaListaProdutosEntrada();
+    });
+    $("#btnCartaCorrecao").click(function(){
+        CartaCorrecao();
     });
     $("#btnDevolverNotaGarantia").click(function(){
         DevolverNotaGarantia();
