@@ -1094,15 +1094,3 @@ function MontaTabelaLog(data){
     }
     $("#Registros").html(tabela);
 }
-
-
-
-function CarregaHistoricoVenda(){
-    $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',{
-        method:'CartaCorrecao',
-        nroSequencial: $("#nroSequencial").val()
-    }, function(data){
-        data = eval('('+data+')');
-    }); 
-     
-}

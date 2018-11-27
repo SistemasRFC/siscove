@@ -150,11 +150,11 @@ function CarregaDadosEntrada(){
                     $("#btnConsultarNota").show();
                     $("#btnDevolucaoNota").hide();
                     $("#btnDevolucaoNotaGarantia").hide();
-                    $("#btnCartaCorrecao").hide();
+                    $("#btnCartaCorrecao").show();
                 }else{
                     $("#btnDevolucaoNota").show();
                     $("#btnDevolucaoNotaGarantia").show();
-                    $("#btnCartaCorrecao").show();
+                    $("#btnCartaCorrecao").hide();
                 }
             }
             $("#indEntrada").change();
@@ -737,3 +737,24 @@ $(function(){
         }
     });
 });
+
+function CartaCorrecao(){
+    $.post('../../Controller/EntradaEstoque/EntradaEstoqueController.php',
+        {
+            method: 'CartaCorrecao',
+            nroSequencial: $("#nroSequencial").val(),
+            codVenda: $("#nroSequencial").val()
+        }, function(data){
+            data = eval('('+data+')');
+            if (data != null){
+                if (!data[0]){                    
+                    $( "#dialogInformacao" ).jqxWindow('setContent', data[1]);
+                    $( "#dialogInformacao" ).jqxWindow( "open" );
+                }else{
+                    window.open(data[1], '_blank');
+                }
+            }else{
+                return true;
+            }
+    }); 
+}

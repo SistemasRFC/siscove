@@ -559,9 +559,13 @@ class EntradaEstoqueModel extends BaseModel
         $body = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         // As próximas três linhas são um exemplo de como imprimir as informações de retorno da API.
-        print($http_code."\n");
-        print($body."\n\n");
-        print("");
+//        print($http_code."\n");
+//        print($body."\n\n");
+//        print("");
+        $body = json_decode($body);
+        $result[0]=true;
+        $result[1]=URL.$body->caminho_pdf_carta_correcao; 
         curl_close($ch);        
+        echo json_encode($result);
     }
 }
