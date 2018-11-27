@@ -133,30 +133,30 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
                                 $corLinha="white";
                             }?>
 
-                        <tr bgcolor="<?echo $corLinha?>" class="trcor">
+                        <tr bgcolor="<?php echo $corLinha?>" class="trcor">
                             <td>
-                                <?echo $dadosProdutosVenda[$i]['NME_USUARIO_COMPLETO']?>
-                            </td>
-                            <td>
-                                <?echo $dadosProdutosVenda[$i]['DSC_PRODUTO']?>
+                                <?php echo $dadosProdutosVenda[$i]['NME_USUARIO_COMPLETO']?>
                             </td>
                             <td>
-                                <?echo $dadosProdutosVenda[$i]['DSC_MARCA']?>
+                                <?php echo $dadosProdutosVenda[$i]['DSC_PRODUTO']?>
+                            </td>
+                            <td>
+                                <?php echo $dadosProdutosVenda[$i]['DSC_MARCA']?>
                             </td>
                             <td align="right">
-                               R$ <?echo number_format($dadosProdutosVenda[$i]['VLR_VENDA'],2)?>
+                               R$ <?php echo number_format($dadosProdutosVenda[$i]['VLR_VENDA'],2)?>
                             </td>
                             <td align="right">
-                                <?echo $dadosProdutosVenda[$i]['QTD_VENDIDA']?>
+                                <?php echo $dadosProdutosVenda[$i]['QTD_VENDIDA']?>
                             </td>
                             <td align="right">
-                               R$ <?echo number_format($dadosProdutosVenda[$i]['VLR_DESCONTO'],2)?>
+                               R$ <?php echo number_format($dadosProdutosVenda[$i]['VLR_DESCONTO'],2)?>
                             </td>
                             <td align="right">
-                               R$ <?echo number_format($dadosProdutosVenda[$i]['VLR_TOTAL'],2)?>
+                               R$ <?php echo number_format($dadosProdutosVenda[$i]['VLR_TOTAL'],2)?>
                             </td>
                         </tr>
-                        <?$vlrTotal = $vlrTotal+$dadosProdutosVenda[$i]['VLR_TOTAL'];
+                        <?php $vlrTotal = $vlrTotal+$dadosProdutosVenda[$i]['VLR_TOTAL'];
                         $i++;
                         }
                         ?>
@@ -165,7 +165,7 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
                                 Total
                             </td>
                             <td align="right">
-                               R$ <?echo number_format($vlrTotal,2)?>
+                               R$ <?php echo number_format($vlrTotal,2)?>
                             </td>
                         </tr>
                     </table>
@@ -197,7 +197,7 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
                                 Valor
                             </td>
                         </tr>
-                        <?
+                        <?php 
                         $corLinha = "white";
                         $i=0;
                         $total = count($dadosPagamentosVenda);
@@ -208,18 +208,18 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
                             }else{
                                 $corLinha="white";
                             }?>
-                        <tr bgcolor="<?echo $corLinha?>" class="trcor">
+                        <tr bgcolor="<?php echo $corLinha?>" class="trcor">
                             <td>
-                                <?echo $dadosPagamentosVenda[$i]['DTA_PAGAMENTO']?>
+                                <?php echo $dadosPagamentosVenda[$i]['DTA_PAGAMENTO']?>
                             </td>
                             <td>
-                                <?echo $dadosPagamentosVenda[$i]['DSC_TIPO_PAGAMENTO']?>
+                                <?php echo $dadosPagamentosVenda[$i]['DSC_TIPO_PAGAMENTO']?>
                             </td>
                             <td align="right">
-                                R$ <?echo number_format($dadosPagamentosVenda[$i]['VLR_PAGAMENTO'],2)?>
+                                R$ <?php echo number_format($dadosPagamentosVenda[$i]['VLR_PAGAMENTO'],2)?>
                             </td>
                         </tr>
-                        <?$vlrTotal = $vlrTotal+$dadosPagamentosVenda[$i]['VLR_PAGAMENTO'];
+                        <?php $vlrTotal = $vlrTotal+$dadosPagamentosVenda[$i]['VLR_PAGAMENTO'];
                         $i++;
                         }
                         ?>
@@ -228,7 +228,7 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
                                 Total
                             </td>
                             <td align="right">
-                               R$ <?echo number_format($vlrTotal,2)?>
+                               R$ <?php echo number_format($vlrTotal,2)?>
                             </td>
                         </tr>
                     </table>

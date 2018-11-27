@@ -13,11 +13,8 @@ class CartaCorrecaoModel extends BaseModel
     Public Function ListarSequenciaisGrid(){
         $dao = new CartaCorrecaoDao();
         $lista = $dao->ListarSequenciaisGrid();
-        if ($json){
-            return json_encode($lista);
-        }else{
-            return $lista;
-        }
+        
+        return json_encode($lista);
     }
 }
 ?>

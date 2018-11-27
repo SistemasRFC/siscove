@@ -4,6 +4,7 @@
         <title>Cadastro de Venda</title>
         <meta http-equiv="Content-Type" content="text/HTML; charset=utf-8">
         <script src="js/DialogsView.js?ramdom=<?php echo time();?>"></script>
+        <script src="js/CartaCorrecaoView.js?ramdom=<?php echo time();?>"></script>
     </head>
     <body>
     <input type="hidden" id="method" name="method">
