@@ -51,11 +51,6 @@ class EntradaEstoqueController extends BaseController
         $model = new EntradaEstoqueModel();
         echo $model->DevolverNotaGarantia();        
     }
-
-    Public Function CartaCorrecao(){
-        $model = new EntradaEstoqueModel();
-        echo $model->CartaCorrecao();        
-    }
 }
 $entradaEstoqueController = new EntradaEstoqueController();
 ?>

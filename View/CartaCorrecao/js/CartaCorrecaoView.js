@@ -1,3 +1,16 @@
+$(function() {
+    $("#btnEnviarCartaCorrecao").click(function(){
+        $.post('../../Controller/Cliente/ClienteController.php',
+        {method: $("#method").val(),
+        ref: $("#codCliente").val(),
+        dscCartaCorrecao: $("#dscCliente").val()
+    }, function(data){
+
+    });
+    });
+
+});
+
 function CarregaGridSequenciais(){
     $("#tdSequenciais").html("");
     $("#tdSequenciais").html('<div id="listaSequenciais"></div>');
@@ -14,6 +27,7 @@ function CarregaGridSequenciais(){
            }
     );
 }
+
 function MontaTabelaSequenciais(listaSequenciais){
     var nomeGrid = 'listaSequenciais';
     var source =
@@ -25,8 +39,8 @@ function MontaTabelaSequenciais(listaSequenciais){
         },
         datafields:
         [
-            { name: 'COD_MOVIMENTACAO', type: 'string' },
-            { name: 'NRO_SEQUENCIAL', type: 'string' },
+            { name: 'COD_VENDA', type: 'string' },
+            { name: 'REFERENCIA', type: 'string' },
             { name: 'DTA_NOTA', type: 'string' },
             { name: 'COD_USUARIO', type: 'string' },
             { name: 'TPO_NOTA', type: 'string' },
@@ -45,26 +59,24 @@ function MontaTabelaSequenciais(listaSequenciais){
         columnsresize: true,
         selectionmode: 'singlerow',
         columns: [
-          { text: 'C&oacute;digo', columntype: 'textbox', datafield: 'COD_MOVIMENTACAO', width: 80},
-          { text: 'Chave da Nota', datafield: 'NRO_SEQUENCIAL', columntype: 'textbox', width: 100},
+          { text: 'Código da Venda', columntype: 'textbox', datafield: 'COD_VENDA', width: 120},
+          { text: 'Referência', datafield: 'REFERENCIA', columntype: 'textbox', width: 100},
           { text: 'Data', datafield: 'DTA_NOTA', columntype: 'textbox', width: 170},
           { text: 'Tipo da Movimentação', datafield: 'TPO_NOTA', columntype: 'textbox', width: 170},
-          { text: 'Valor', datafield: 'VLR_NOTA', columntype: 'textbox', width: 170},
-          { text: 'Usuário', datafield: 'COD_USUARIO', columntype: 'textbox', width: 80}
+          { text: 'Valor', datafield: 'VLR_NOTA', columntype: 'textbox', width: 100},
+          { text: 'Cod. Usuário', datafield: 'COD_USUARIO', columntype: 'textbox', width: 100}
         ]
     });
     // EVENTS
     $("#"+nomeGrid).jqxGrid('localizestrings', localizationobj);
     $('#'+nomeGrid).on('rowdoubleclick', function (event)
     {
-        var args = event.args;
-        $("#codNota").val($('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).NRO_SEQUENCIAL);//MUDAR
-        $("#dscCartaCorrecao").val('');//MUDAR
-        $("#method").val("InsertCartaCorrecao");
-        // $("#CartaCorrecaoForm").jqxWindow("open");
+        var $codVenda = $('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).COD_VENDA;
+        window.open('../../Controller/CartaCorrecao/CartaCorrecaoController.php?codVenda='+$codVenda+'&method=ResumoVendaCartaCorrecao','page','left=250,top=120,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=850,height=600');
     });
     $("#dialogInformacao" ).jqxWindow("close");  
 }
+
 $(document).ready(function(){
     CarregaGridSequenciais();
 

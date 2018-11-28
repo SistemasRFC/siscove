@@ -531,37 +531,4 @@ class EntradaEstoqueModel extends BaseModel
         } 
         return str_replace(',', '.', str_replace('.', '', $vlrSoma));
     }
-    
-    Public Function CartaCorrecao(){
-        $server = URL;
-        $login = TOKEN;
-        $password = "";
-        $dadosVenda = $this->CarregaDadosEntradaEstoque(false);
-        $VendaReferenciaModel = new VendaReferenciaDevolucaoModel();
-        $result = $VendaReferenciaModel->RetornaUltimaReferencia(false);
-        $ref = "D".filter_input(INPUT_POST, 'codVenda', FILTER_SANITIZE_NUMBER_INT)."00".$result[1][0]['NRO_SEQUENCIAL'];        
-        if (AMBIENTE=='HMG'){
-            $destinatario = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
-        }else{
-            $destinatario = $dadosVenda[1][0]['DSC_FORNECEDOR'];
-        }
-        $correcao = array (
-          "correcao" => "Frete por conta do Destinatario.",
-        );
-        // Inicia o processo de envio das informações usando o cURL.
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $server . "/v2/nfe/" . $ref  . "/carta_correcao");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($correcao));
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
-        $body = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        // As próximas três linhas são um exemplo de como imprimir as informações de retorno da API.
-        print($http_code."\n");
-        print($body."\n\n");
-        print("");
-        curl_close($ch);        
-    }
 }

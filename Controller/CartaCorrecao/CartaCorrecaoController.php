@@ -1,6 +1,7 @@
 <?php
 include_once("../BaseController.php");
 include_once("../../Model/CartaCorrecao/CartaCorrecaoModel.php");
+include_once("../../Model/Relatorios/RelatoriosVendasModel.php");
 class CartaCorrecaoController extends BaseController
 {
     Public Function CartaCorrecaoController(){
@@ -28,10 +29,26 @@ class CartaCorrecaoController extends BaseController
         $params = array('dadosVenda' => urlencode(serialize($dadosVenda[1])),
                         'dadosProdutosVenda' => urlencode(serialize($dadosProdutosVenda[1])),
                         'dadosPagamentosVenda' => urlencode(serialize($dadosPagamentosVenda[1])));
-        $view = $this->getPath()."/View/Relatorios/ResumoVendaView.php";
+        $view = $this->getPath()."/View/CartaCorrecao/CadCartaCorrecaoView.php";
         echo ($this->gen_redirect_and_form($view, $params));
     }
 
+    Public Function ResumoEntradaCartaCorrecao(){
+        $model = new CartaCorrecaoModel();
+        $dadosEntrada = $model->DadosEntrada();
+        $dadosProdutosEntrada = $model->DadosProdutosEntrada();
+        $params[0] = array('dadosEntrada' => $dadosEntrada[1]);
+        $params[1] = array('dadosProdutosEntrada' => $dadosProdutosEntrada[1]);
+        $params = array('dadosEntrada' => urlencode(serialize($dadosEntrada[1])),
+                        'dadosProdutosEntrada' => urlencode(serialize($dadosProdutosEntrada[1])));
+        $view = $this->getPath()."/View/CartaCorrecao/CadCartaCorrecaoView.php";
+        echo ($this->gen_redirect_and_form($view, $params));
+    }
+
+    Public Function CartaCorrecao(){
+        $model = new CartaCorrecaoModel();
+        echo $model->CartaCorrecao();        
+    }
 }
 $cartaCorrecaoController = new CartaCorrecaoController();
 ?>
