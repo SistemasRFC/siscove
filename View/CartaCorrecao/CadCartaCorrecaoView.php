@@ -8,10 +8,11 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
         <title> Carta de Correção</title>
         <meta http-equiv="Content-Type" content="text/HTML; charset=utf-8">
         <link href="../../Resources/css/style.css" rel="stylesheet">
+        <script src="js/CartaCorrecaoView.js?ramdom=<?php echo time();?>"></script>
     </head>
     <body>
-    <input type="hidden" id="dscCartaCorrecao" name="dscCartaCorrecao" value="<?php echo $_REQUEST['referencia'];?>">
-    <?php if($_REQUEST['tpoNota'] == 'VENDA'){ ?>
+    <input type="hidden" id="notaReferencia" name="notaReferencia" value="<?php echo $_REQUEST['referencia'];?>">
+    <?php if($dadosVenda !== ''){ ?>
     <table width="100%">
             <tr>
                 <td class="TDTituloCabecalho">
@@ -334,7 +335,7 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
                     <table width="100%" class="TabelaConteudo" cellpadding="0" cellspacing="2">
                         <tr>
                             <td align="center">
-                                <textarea style="border-color: #000000;" name="dscCartaCorrecao" id="dscCartaCorrecaoVenda" cols="80" rows="7"
+                                <textarea style="border-color: #000000;" name="dscCartaCorrecao" id="dscCartaCorrecao" cols="80" rows="7"
                                     placeholder="Informe as correções aqui!"></textarea>
                             </td>
                         </tr>

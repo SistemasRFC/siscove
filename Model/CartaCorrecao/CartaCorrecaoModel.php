@@ -39,15 +39,16 @@ class CartaCorrecaoModel extends BaseModel
         $dadosVenda = $entradaEstoqueModel->CarregaDadosEntradaEstoque(false);
         $VendaReferenciaModel = new VendaReferenciaDevolucaoModel();
         $result = $VendaReferenciaModel->RetornaUltimaReferencia(false);
-        $ref = "D".filter_input(INPUT_POST, 'codVenda', FILTER_SANITIZE_NUMBER_INT)."00".$result[1][0]['NRO_SEQUENCIAL'];        
+        $ref = filter_input(INPUT_POST, 'ref', FILTER_SANITIZE_NUMBER_INT);
         if (AMBIENTE=='HMG'){
             $destinatario = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
         }else{
             $destinatario = $dadosVenda[1][0]['DSC_FORNECEDOR'];
         }
         $correcao = array (
-          "correcao" => "Frete por conta do Destinatario.",
+          "correcao" => filter_input(INPUT_POST, 'dscCartaCorrecao', FILTER_SANITIZE_STRING),
         );
+        var_dump($correcao); die;
         // Inicia o processo de envio das informações usando o cURL.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $server . "/v2/nfe/" . $ref  . "/carta_correcao");

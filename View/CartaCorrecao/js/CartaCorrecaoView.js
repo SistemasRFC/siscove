@@ -1,14 +1,25 @@
 $(function() {
     $("#btnEnviarCartaCorrecao").click(function(){
-        $.post('../../Controller/Cliente/ClienteController.php',
-        {method: $("#method").val(),
-        ref: $("#codCliente").val(),
-        dscCartaCorrecao: $("#dscCliente").val()
-    }, function(data){
-
+        $( "#dialogInformacao" ).jqxWindow('setContent', 'Aguarde, salvando carta de correção.');
+        $( "#dialogInformacao" ).jqxWindow('open');
+        $.post('../../Controller/CartaCorrecao/CartaCorrecaoController.php',
+        {
+            method: 'CartaCorrecao',
+            ref: $("#notaReferencia").val(),
+            dscCartaCorrecao: $("#dscCartaCorrecao").val()
+        },
+        function(data){
+            data = eval ('('+data+')');
+            if(data[0]){
+                $( "#dialogInformacao" ).jqxWindow('setContent', 'Carta enviada com sucesso!');
+                window.setTimeout(function (){
+                    $( "#dialogInformacao" ).jqxWindow('close');
+                }, '2000');
+            } else {
+                $( "#dialogInformacao" ).jqxWindow('setContent', 'Erro ao enviar a Carta!'+data[1]);
+            }
+        });
     });
-    });
-
 });
 
 function CarregaGridSequenciais(){
@@ -72,7 +83,11 @@ function MontaTabelaSequenciais(listaSequenciais){
     $('#'+nomeGrid).on('rowdoubleclick', function (event)
     {
         var $codVenda = $('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).COD_VENDA;
-        window.open('../../Controller/CartaCorrecao/CartaCorrecaoController.php?codVenda='+$codVenda+'&method=ResumoVendaCartaCorrecao','page','left=250,top=120,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=850,height=600');
+        if($('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).TPO_NOTA = 'VENDA'){
+            window.open('../../Controller/CartaCorrecao/CartaCorrecaoController.php?codVenda='+$codVenda+'&method=ResumoVendaCartaCorrecao','page','left=250,top=120,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=850,height=600');
+        } else {
+            window.open('../../Controller/CartaCorrecao/CartaCorrecaoController.php?codVenda='+$codVenda+'&method=ResumoEntradaCartaCorrecao','page','left=250,top=120,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=850,height=600');
+        }
     });
     $("#dialogInformacao" ).jqxWindow("close");  
 }
