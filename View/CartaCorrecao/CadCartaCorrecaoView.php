@@ -8,7 +8,15 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
         <title> Carta de Correção</title>
         <meta http-equiv="Content-Type" content="text/HTML; charset=utf-8">
         <link href="../../Resources/css/style.css" rel="stylesheet">
-        <script src="js/CartaCorrecaoView.js?ramdom=<?php echo time();?>"></script>
+        <script src="../../Resources/js/jquery-1.9.0.js"></script>
+        <link rel="stylesheet" href="../../Resources/jqx/jqwidgets/styles/jqx.base.css" type="text/css" />
+        <link rel="stylesheet" href="../../Resources/jqx/jqwidgets/styles/jqx.bootstrap.css" type="media" />
+        <script type="text/javascript" src="../../Resources/jqx/jqwidgets/jqxcore.js"></script>       
+        <script type="text/javascript" src="../../Resources/jqx/jqwidgets/jqxchart.js"></script>
+        <script type="text/javascript" src="../../Resources/jqx/jqwidgets/jqxdata.js"></script>
+        <script type="text/javascript" src="../../Resources/jqx/jqwidgets/globalization/globalize.js"></script>        
+        <script type="text/javascript" src="../../Resources/jqx/jqwidgets/jqxwindow.js"></script>        
+        <script src="js/CadCartaCorrecaoView.js?ramdom=<?php echo time();?>"></script>
     </head>
     <body>
     <input type="hidden" id="notaReferencia" name="notaReferencia" value="<?php echo $_REQUEST['referencia'];?>">
@@ -349,4 +357,10 @@ $dadosPagamentosVenda = (unserialize(urldecode($_POST['dadosPagamentosVenda'])))
             </tr>
         </table>
     </body>
+<div id="dialogInformacao">
+  <div id="windowHeader">
+  </div>
+  <div style="overflow: hidden;" id="windowContent">
+  </div>
+</div>    
 </html>

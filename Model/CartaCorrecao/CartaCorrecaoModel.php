@@ -46,9 +46,8 @@ class CartaCorrecaoModel extends BaseModel
             $destinatario = $dadosVenda[1][0]['DSC_FORNECEDOR'];
         }
         $correcao = array (
-          "correcao" => filter_input(INPUT_POST, 'dscCartaCorrecao', FILTER_SANITIZE_STRING),
+            "correcao" => filter_input(INPUT_POST, 'dscCartaCorrecao', FILTER_SANITIZE_STRING),
         );
-        var_dump($correcao); die;
         // Inicia o processo de envio das informações usando o cURL.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $server . "/v2/nfe/" . $ref  . "/carta_correcao");
