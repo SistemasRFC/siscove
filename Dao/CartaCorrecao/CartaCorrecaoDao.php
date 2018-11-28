@@ -10,14 +10,14 @@ class CartaCorrecaoDao extends BaseDao
         $sql = " SELECT COD_VENDA,
                         REFERENCIA,
                         DTA_NOTA,
-                        COD_USUARIO,
+                        NME_USUARIO,
                         TPO_NOTA,
                         VLR_NOTA
                    FROM (
                  SELECT VRD.COD_VENDA AS COD_VENDA,
                         CONCAT('D', VRD.COD_VENDA, '00', VRD.NRO_SEQUENCIAL) AS REFERENCIA,
                         DATE_FORMAT(VRD.DTA_EMISSAO_NOTA, '%d/%m/%Y') AS DTA_NOTA,
-                        VRD.COD_USUARIO AS COD_USUARIO,
+                        U.NME_USUARIO_COMPLETO AS NME_USUARIO,
                         'ENTRADA ESTOQUE' AS TPO_NOTA,
                         FORMAT(COALESCE(SUM(EE.VLR_UNITARIO*EE.QTD_ENTRADA),0), 2, 'de_DE') AS VLR_NOTA
                    FROM EN_ENTRADA E
@@ -26,13 +26,15 @@ class CartaCorrecaoDao extends BaseDao
                     AND VRD.IND_STATUS_REFERENCIA = 'A'
                    LEFT JOIN EN_ENTRADA_ESTOQUE EE
                      ON E.NRO_SEQUENCIAL = EE.NRO_SEQUENCIAL
+                  INNER JOIN SE_USUARIO U
+                     ON VRD.COD_USUARIO = U.COD_USUARIO
                   WHERE E.IND_ENTRADA = 'F'
                   GROUP BY VRD.COD_VENDA
                  UNION
                  SELECT V.COD_VENDA AS COD_VENDA,
                         CONCAT(VR.COD_VENDA, '00', VR.NRO_SEQUENCIAL) AS REFERENCIA,
                         DATE_FORMAT(VR.DTA_EMISSAO_NOTA, '%d/%m/%Y') AS DTA_NOTA,
-                        VR.COD_USUARIO AS COD_USUARIO,
+                        U.NME_USUARIO_COMPLETO AS NME_USUARIO,
                         'VENDA' AS TPO_NOTA,
                         FORMAT(SUM(VPG.VLR_PAGAMENTO), 2, 'de_DE') AS VLR_NOTA
                    FROM EN_VENDA V
@@ -41,6 +43,8 @@ class CartaCorrecaoDao extends BaseDao
                     AND VR.IND_STATUS_REFERENCIA = 'A'
                   INNER JOIN EN_VENDA_PAGAMENTO VPG
                      ON V.COD_VENDA = VPG.COD_VENDA
+                  INNER JOIN SE_USUARIO U
+                     ON VR.COD_USUARIO = U.COD_USUARIO
                   WHERE V.NRO_STATUS_VENDA = 'F'
                   GROUP BY V.COD_VENDA) AS X";
 

@@ -17,7 +17,7 @@
                 vertical-align:middle;
                 font-family: arial, helvetica, serif;
                 border-bottom: 1px solid #a4bed4;">
-                Listagem de Sequenciais
+                Listagem de Referências
             </td>
         </tr>
         <tr>

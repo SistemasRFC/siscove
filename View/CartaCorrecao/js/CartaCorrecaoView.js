@@ -29,7 +29,7 @@ function MontaTabelaSequenciais(listaSequenciais){
             { name: 'COD_VENDA', type: 'string' },
             { name: 'REFERENCIA', type: 'string' },
             { name: 'DTA_NOTA', type: 'string' },
-            { name: 'COD_USUARIO', type: 'string' },
+            { name: 'NME_USUARIO', type: 'string' },
             { name: 'TPO_NOTA', type: 'string' },
             { name: 'VLR_NOTA', type: 'string' }
         ]
@@ -37,7 +37,7 @@ function MontaTabelaSequenciais(listaSequenciais){
     var dataAdapter = new $.jqx.dataAdapter(source);
     $("#"+nomeGrid).jqxGrid(
     {
-        width: 800,
+        width: 750,
         source: dataAdapter,
         theme: theme,
         sortable: true,
@@ -47,11 +47,11 @@ function MontaTabelaSequenciais(listaSequenciais){
         selectionmode: 'singlerow',
         columns: [
           { text: 'Código da Venda', columntype: 'textbox', datafield: 'COD_VENDA', width: 120},
-          { text: 'Referência', datafield: 'REFERENCIA', columntype: 'textbox', width: 100},
-          { text: 'Data', datafield: 'DTA_NOTA', columntype: 'textbox', width: 170},
-          { text: 'Tipo da Movimentação', datafield: 'TPO_NOTA', columntype: 'textbox', width: 170},
-          { text: 'Valor', datafield: 'VLR_NOTA', columntype: 'textbox', width: 100},
-          { text: 'Cod. Usuário', datafield: 'COD_USUARIO', columntype: 'textbox', width: 100}
+          { text: 'Referência', datafield: 'REFERENCIA', columntype: 'textbox', width: 100, cellsalign: 'right'},
+          { text: 'Data', datafield: 'DTA_NOTA', columntype: 'textbox', width: 100, cellsalign: 'center', align: 'center'},
+          { text: 'Tipo da Movimentação', datafield: 'TPO_NOTA', columntype: 'textbox', width: 150},
+          { text: 'Valor', datafield: 'VLR_NOTA', columntype: 'textbox', width: 100, cellsalign: 'right'},
+          { text: 'Usuário', datafield: 'NME_USUARIO', columntype: 'textbox', width: 170}
         ]
     });
     // EVENTS
