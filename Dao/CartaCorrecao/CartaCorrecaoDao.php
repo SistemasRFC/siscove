@@ -55,17 +55,16 @@ class CartaCorrecaoDao extends BaseDao
         $sql = " SELECT E.NRO_SEQUENCIAL,
                         E.DTA_ENTRADA,
                         F.NRO_CNPJ,
-                        F.NME_FORNECEDOR
+                        F.DSC_FORNECEDOR
                    FROM EN_ENTRADA E
                   INNER JOIN EN_FORNECEDOR F
                      ON E.COD_FORNECEDOR = F.COD_FORNECEDOR
                   INNER JOIN EN_VENDA_REFERENCIA_DEVOLUCAO VRD
                      ON E.NRO_SEQUENCIAL = VRD.COD_VENDA
                   WHERE VRD.COD_VENDA = ".filter_input(INPUT_GET, 'codVenda', FILTER_SANITIZE_NUMBER_INT);
-
         return $this->selectDB($sql, false);
     }
-
+    
     Public Function DadosProdutosEntrada(){
         $sql = " SELECT P.DSC_PRODUTO,
                         M.DSC_MARCA,
@@ -82,7 +81,6 @@ class CartaCorrecaoDao extends BaseDao
                   INNER JOIN EN_VENDA_REFERENCIA_DEVOLUCAO VRD
                      ON E.NRO_SEQUENCIAL = VRD.COD_VENDA
                   WHERE VRD.COD_VENDA = ".filter_input(INPUT_GET, 'codVenda', FILTER_SANITIZE_NUMBER_INT);
-
         return $this->selectDB($sql, false);
     }
 }

@@ -21,8 +21,9 @@ class CartaCorrecaoModel extends BaseModel
 
     Public Function DadosEntrada(){
         $dao = new CartaCorrecaoDao();
-        $dadosEntrada = $dao->DadosEntrada($_SESSION['cod_cliente_final']);
+        $dadosEntrada = $dao->DadosEntrada();
         $dadosEntrada[1][0]['DTA_ENTRADA'] = $this->ConverteDataBanco($dadosEntrada[1][0]['DTA_ENTRADA']);
+        $dadosEntrada[1][0]['NRO_CNPJ'] = $this->mask($dadosEntrada[1][0]['NRO_CNPJ'],'##.###.###/####-##');
         return $dadosEntrada;
     }
 

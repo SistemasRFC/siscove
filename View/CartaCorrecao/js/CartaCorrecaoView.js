@@ -59,7 +59,8 @@ function MontaTabelaSequenciais(listaSequenciais){
     $('#'+nomeGrid).on('rowdoubleclick', function (event)
     {
         var $codVenda = $('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).COD_VENDA;
-        if($('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).TPO_NOTA = 'VENDA'){
+        var $tpoNota = $('#listaSequenciais').jqxGrid('getrowdatabyid', args.rowindex).TPO_NOTA;
+        if($tpoNota == 'VENDA'){
             window.open('../../Controller/CartaCorrecao/CartaCorrecaoController.php?codVenda='+$codVenda+'&method=ResumoVendaCartaCorrecao','page','left=250,top=120,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=850,height=600');
         } else {
             window.open('../../Controller/CartaCorrecao/CartaCorrecaoController.php?codVenda='+$codVenda+'&method=ResumoEntradaCartaCorrecao','page','left=250,top=120,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=850,height=600');
