@@ -196,14 +196,15 @@ class NfeModel extends BaseModel
                 $tpoUnidade = "UN";
             }
             $vlrSoma = ($produtosVendas[1][$i]['VLR_VENDA']-$produtosVendas[1][$i]['VLR_DESCONTO'])*$produtosVendas[1][$i]['QTD_VENDIDA'];
+            $vlrVenda = ($produtosVendas[1][$i]['VLR_VENDA']-$produtosVendas[1][$i]['VLR_DESCONTO']);
             $produtos[$i] = array("numero_item" => $item.'',
                                 "codigo_produto" => $produtosVendas[1][$i]['COD_PRODUTO'],
                                 "descricao" => $produtosVendas[1][$i]['DSC_PRODUTO'],
                                 "cfop" => $produtosVendas[1][$i]['COD_CFOP'],
                                 "unidade_comercial" => $tpoUnidade,
                                 "quantidade_comercial" => $produtosVendas[1][$i]['QTD_VENDIDA'],
-                                "valor_unitario_comercial" => number_format($produtosVendas[1][$i]['VLR_VENDA'],2,'.',''),
-                                "valor_unitario_tributavel" => number_format($produtosVendas[1][$i]['VLR_VENDA'],2,'.',''),
+                                "valor_unitario_comercial" => number_format($vlrVenda,2,'.',''),
+                                "valor_unitario_tributavel" => number_format($vlrVenda,2,'.',''),
                                 "unidade_tributavel" => "un",
                                 "codigo_ncm" => $produtosVendas[1][$i]['COD_NCM'],
                                 "quantidade_tributavel" => $produtosVendas[1][$i]['QTD_VENDIDA'],
