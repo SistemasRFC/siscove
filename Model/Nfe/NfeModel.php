@@ -6,13 +6,19 @@ include_once("../../Model/Vendas/ProdutosVendasModel.php");
 include_once("../../Model/VendaReferencia/VendaReferenciaModel.php");
 class NfeModel extends BaseModel
 {
+    public static $cnpj_emitente = "31822088000150";
+//    public $cnpj_emitente = "26441410000161;
+    public static $ie_emitente = "788505100116";
+//    public $ie_emitente = "767247800177";
+    
     public function NfeModel(){
         If (!isset($_SESSION)){
             ob_start();
             session_start();
         }
     }
-
+    
+    
 
 
     Public Function AutorizarNota(){
@@ -72,8 +78,8 @@ class NfeModel extends BaseModel
                 "data_emissao" => $dadosVenda[1][0]['DTA_EMISSAO_NOTA'],
                 "tipo_documento" => "1",
                 "finalidade_emissao" => "1",
-                "cnpj_emitente" => "26441410000161",
-                "inscricao_estadual_emitente" => "767247800177",
+                "cnpj_emitente" => self::$cnpj_emitente,
+                "inscricao_estadual_emitente" => self::$ie_emitente,
                 "local_destino" => "1",
                 "nome_destinatario" => $destinatario,
                 "cnpj_destinatario" => $dadosVenda[1][0]['NRO_CNPJ'],
@@ -118,8 +124,8 @@ class NfeModel extends BaseModel
                 "data_emissao" => $dadosVenda[1][0]['DTA_EMISSAO_NOTA'],
                 "tipo_documento" => "1",
                 "finalidade_emissao" => "1",
-                "cnpj_emitente" => "26441410000161",
-                "inscricao_estadual_emitente" => "767247800177",
+                "cnpj_emitente" => self::$cnpj_emitente,
+                "inscricao_estadual_emitente" => self::$ie_emitente,
                 "local_destino" => "1",
                 "nome_destinatario" => $destinatario,
                 "cpf_destinatario" => $dadosVenda[1][0]['NRO_CPF'],
