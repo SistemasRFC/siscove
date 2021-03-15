@@ -6,6 +6,11 @@ include_once("../../Model/VendaReferenciaDevolucao/VendaReferenciaDevolucaoModel
 include_once("../../Model/Vendas/VendasModel.php");
 class EntradaEstoqueModel extends BaseModel
 {
+        public static $cnpj_emitente = "31822088000150";
+//    public $cnpj_emitente = "26441410000161;
+    public static $ie_emitente = "788505100116";
+//    public $ie_emitente = "767247800177";
+    
     Public Function EntradaEstoqueModel(){
         If (!isset($_SESSION)){
             ob_start();
@@ -141,8 +146,8 @@ class EntradaEstoqueModel extends BaseModel
             "data_entrada_saida" => $dadosVenda[1][0]['DTA_EMISSAO_NOTA'],
             "tipo_documento" => "0",
             "finalidade_emissao" => "4",
-            "cnpj_emitente" => "26441410000161",
-            "inscricao_estadual_emitente" => "767247800177",
+            "cnpj_emitente" => self::$cnpj_emitente,
+            "inscricao_estadual_emitente" => self::$ie_emitente,
             "local_destino" => "1",
             "nome_destinatario" => $destinatario,
             "cnpj_destinatario" => $dadosVenda[1][0]['NRO_CNPJ'],
@@ -389,8 +394,8 @@ class EntradaEstoqueModel extends BaseModel
             "data_entrada_saida" => $dadosVenda[1][0]['DTA_EMISSAO_NOTA'],
             "tipo_documento" => "1",
             "finalidade_emissao" => "1",
-            "cnpj_emitente" => "26441410000161",
-            "inscricao_estadual_emitente" => "767247800177",
+            "cnpj_emitente" => self::$cnpj_emitente,
+            "inscricao_estadual_emitente" => self::$ie_emitente,
             "local_destino" => $dadosVenda[1][0]['SGL_UF']=='DF'?"1":"2",
             "nome_destinatario" => $destinatario,
             "cnpj_destinatario" => $dadosVenda[1][0]['NRO_CNPJ'],
