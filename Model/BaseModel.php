@@ -1,8 +1,33 @@
 <?php
+define ('AMBIENTE', 'HMG');
+//if (AMBIENTE=='HMG'){
+//    define ('TOKEN', 'DQm0v7ygXfsXZ4GkmF3wo9NSUyGUifcw');
+//    define ('URL', 'http://homologacao.acrasnfe.acras.com.br');
+//}else{
+//    define ('TOKEN', 'mJZGG7ItgVrduPnWrNDrmWKboGHTKmUN');
+////    define ('URL', 'https://producao.acrasnfe.acras.com.br');
+//    define ('URL', 'https://api.focusnfe.com.br');
+//}
 
+//if (AMBIENTE=='HMG'){
+//    define ('TOKEN', '8F3rt7lrN6uJGUviooqpFcIt0GAVakN7');
+//    define ('URL', 'http://homologacao.acrasnfe.acras.com.br');
+//}else{
+//    define ('TOKEN', 'IaltI6m7d5EmkNJrkOcEGFDXCzcLCrMt');
+////    define ('URL', 'https://producao.acrasnfe.acras.com.br');
+//    define ('URL', 'https://api.focusnfe.com.br');
+//}
+if (AMBIENTE=='HMG'){
+    define ('TOKEN', 'Wpa1kcEZfR0a017LQgoIMS8y9DBrLc3S');
+    define ('URL', 'http://homologacao.acrasnfe.acras.com.br');
+}else{
+    define ('TOKEN', 'oWoF6CzGIxfdGX90nLesaD0HuaOgljGP');
+//    define ('URL', 'https://producao.acrasnfe.acras.com.br');
+    define ('URL', 'https://api.focusnfe.com.br');
+}
 class BaseModel
 {
-    public $meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    public $meses = ['Janeiro', 'Fevereiro', 'MarÃ§o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     function BaseModel(){              
 
     }

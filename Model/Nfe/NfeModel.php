@@ -6,9 +6,11 @@ include_once("../../Model/Vendas/ProdutosVendasModel.php");
 include_once("../../Model/VendaReferencia/VendaReferenciaModel.php");
 class NfeModel extends BaseModel
 {
-    public static $cnpj_emitente = "31822088000150";
+//    public static $cnpj_emitente = "31822088000150";
+    public static $cnpj_emitente = "41180916000158";
 //    public $cnpj_emitente = "26441410000161;
-    public static $ie_emitente = "788505100116";
+//    public static $ie_emitente = "788505100116";
+    public static $ie_emitente = "0804124900112";
 //    public $ie_emitente = "767247800177";
     
     public function NfeModel(){
@@ -61,6 +63,9 @@ class NfeModel extends BaseModel
         $login = TOKEN;
         $password = "";
         $ref = filter_input(INPUT_POST, 'codVenda', FILTER_SANITIZE_NUMBER_INT)."00".$referencia;
+        $txtObservacaoNF = "Não Incidência ICMS conforme Decisão...". filter_input(INPUT_POST, 'txtObservacaoNF', FILTER_SANITIZE_STRING);
+        $VendaReferenciaModel = new VendaReferenciaModel();
+        $VendaReferenciaModel->UpdateVendaReferenciaObservacao($referencia, $txtObservacaoNF);
         $NfeDao = new NfeDao();
         $VendaModel = new VendasModel();
         $dadosVenda = $VendaModel->CarregaDadosVenda(FALSE);
@@ -68,6 +73,11 @@ class NfeModel extends BaseModel
             $destinatario = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
         }else{
             $destinatario = $dadosVenda[1][0]['DSC_CLIENTE'];
+        }
+        if($dadosVenda[1][0]['SGL_UF']=='DF'){
+            $local_destino = "1";
+        }else{
+            $local_destino = "2";
         }
         $vlrOriginal = str_replace(',', '.', str_replace('.', '', $dadosVenda[1][0]['VLR_TOTAL_VENDA']))+0.01;
 //        $vlrLiquido = str_replace(',', '.', str_replace('.', '', $dadosVenda[1][0]['VLR_TOTAL_VENDA']))-0.01;
@@ -80,10 +90,10 @@ class NfeModel extends BaseModel
                 "finalidade_emissao" => "1",
                 "cnpj_emitente" => self::$cnpj_emitente,
                 "inscricao_estadual_emitente" => self::$ie_emitente,
-                "local_destino" => "1",
+                "local_destino" => $local_destino,
                 "nome_destinatario" => $destinatario,
-                "cnpj_destinatario" => $dadosVenda[1][0]['NRO_CNPJ'],
-                "inscricao_estadual_destinatario" => $dadosVenda[1][0]['NRO_IE'],
+                "cnpj_destinatario" => preg_replace("/[^0-9]/", "", $dadosVenda[1][0]['NRO_CNPJ']),
+                "inscricao_estadual_destinatario" => preg_replace("/[^0-9]/", "", $dadosVenda[1][0]['NRO_IE']),
                 "logradouro_destinatario" => $dadosVenda[1][0]['TXT_LOGRADOURO'],
                 "numero_destinatario" => $dadosVenda[1][0]['TXT_COMPLEMENTO'],
                 "bairro_destinatario" => $dadosVenda[1][0]['NME_BAIRRO'],
@@ -103,8 +113,8 @@ class NfeModel extends BaseModel
                 "valor_produtos" => str_replace(',', '.', str_replace('.', '', $dadosVenda[1][0]['VLR_VENDA'])),
                 "valor_ipi" => "0",
                 "modalidade_frete" => "0",
-                "informacoes_adicionais_contribuinte" => "Não Incidência ICMS conforme Decisão...",
-                "items" => static::RetornaProdutosNfe(),
+                "informacoes_adicionais_contribuinte" => $txtObservacaoNF,
+                "items" => static::RetornaProdutosNfe($local_destino),
                 "valor_original_fatura" => $vlrOriginal,
                 "valor_desconto_fatura" => "0.01",
                 "valor_liquido_fatura" => str_replace(',', '.', str_replace('.', '', $dadosVenda[1][0]['VLR_TOTAL_VENDA'])), 
@@ -126,7 +136,7 @@ class NfeModel extends BaseModel
                 "finalidade_emissao" => "1",
                 "cnpj_emitente" => self::$cnpj_emitente,
                 "inscricao_estadual_emitente" => self::$ie_emitente,
-                "local_destino" => "1",
+                "local_destino" => $local_destino,
                 "nome_destinatario" => $destinatario,
                 "cpf_destinatario" => $dadosVenda[1][0]['NRO_CPF'],
                 "logradouro_destinatario" => $dadosVenda[1][0]['TXT_LOGRADOURO'],
@@ -148,8 +158,8 @@ class NfeModel extends BaseModel
                 "valor_produtos" => str_replace(',', '.', str_replace('.', '', $dadosVenda[1][0]['VLR_VENDA'])),
                 "valor_ipi" => "0",
                 "modalidade_frete" => "0",
-                "informacoes_adicionais_contribuinte" => "Não Incidência ICMS conforme Decisão...",
-                "items" => static::RetornaProdutosNfe(),
+                "informacoes_adicionais_contribuinte" => $txtObservacaoNF,
+                "items" => static::RetornaProdutosNfe($local_destino),
                 "valor_original_fatura" => $vlrOriginal,
                 "valor_desconto_fatura" => "0.01",
                 "valor_liquido_fatura" => str_replace(',', '.', str_replace('.', '', $dadosVenda[1][0]['VLR_TOTAL_VENDA'])),
@@ -174,6 +184,7 @@ class NfeModel extends BaseModel
         $body = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $body = json_decode($body);
+//        var_dump( $body);
         curl_close($ch); 
         if ($http_code!=202){
             switch ($http_code){
@@ -191,7 +202,7 @@ class NfeModel extends BaseModel
         return $result;
     }
     
-    Public Static Function RetornaProdutosNfe(){
+    Public Static Function RetornaProdutosNfe($local_destino="1"){
         $NfeDao = new NfeDao();
         $produtosVendas = $NfeDao->RetornaMercadoriasVenda();
         for ($i=0;$i<count($produtosVendas[1]);$i++){
@@ -201,12 +212,16 @@ class NfeModel extends BaseModel
             }else{
                 $tpoUnidade = "UN";
             }
+            $cfop = $produtosVendas[1][$i]['COD_CFOP'];
+            if ($local_destino=="2"){
+                $cfop="6102";
+            }
             $vlrSoma = ($produtosVendas[1][$i]['VLR_VENDA']-$produtosVendas[1][$i]['VLR_DESCONTO'])*$produtosVendas[1][$i]['QTD_VENDIDA'];
             $vlrVenda = ($produtosVendas[1][$i]['VLR_VENDA']-$produtosVendas[1][$i]['VLR_DESCONTO']);
             $produtos[$i] = array("numero_item" => $item.'',
                                 "codigo_produto" => $produtosVendas[1][$i]['COD_PRODUTO'],
                                 "descricao" => $produtosVendas[1][$i]['DSC_PRODUTO'],
-                                "cfop" => $produtosVendas[1][$i]['COD_CFOP'],
+                                "cfop" => $cfop,
                                 "unidade_comercial" => $tpoUnidade,
                                 "quantidade_comercial" => $produtosVendas[1][$i]['QTD_VENDIDA'],
                                 "valor_unitario_comercial" => number_format($vlrVenda,2,'.',''),
@@ -259,6 +274,7 @@ class NfeModel extends BaseModel
         $password = "";        
         $VendaReferenciaModel = new VendaReferenciaModel();
         $result = $VendaReferenciaModel->RetornaUltimaReferencia(false);
+
         if ($result[0]){
             switch ($result[1][0]['IND_STATUS_REFERENCIA']) {
                 case 'A':
@@ -438,6 +454,45 @@ class NfeModel extends BaseModel
                 $result[1] = "Esta venda não está fechada!";
             }
         }
+        echo json_encode($result);
+    }
+    
+    Public Function CartaCorrecao(){
+        $server = URL;
+        $login = TOKEN;
+        $password = "";
+        
+        $VendaModel = new VendasModel();
+        $dadosVenda = $VendaModel->CarregaDadosVenda(FALSE);
+        $VendaReferenciaModel = new VendaReferenciaModel();
+        $result = $VendaReferenciaModel->RetornaUltimaReferencia(false);
+        $ref = filter_input(INPUT_POST, 'codVenda', FILTER_SANITIZE_NUMBER_INT)."00".$result[1][0]['NRO_SEQUENCIAL'];        
+        if (AMBIENTE=='HMG'){
+            $destinatario = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+        }else{
+            $destinatario = $dadosVenda[1][0]['DSC_CLIENTE'];
+        }
+        $correcao = array (
+          "correcao" => filter_input(INPUT_POST, 'txtCorrecao', FILTER_SANITIZE_STRING),
+        );
+        // Inicia o processo de envio das informações usando o cURL.
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $server . "/v2/nfe/" . $ref  . "/carta_correcao");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($correcao));
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+        $body = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        // As próximas três linhas são um exemplo de como imprimir as informações de retorno da API.
+//        print($http_code."\n");
+//        print($body."\n\n");
+//        print("");
+        $body = json_decode($body);
+        $result[0]=true;
+        $result[1]=URL.$body->caminho_pdf_carta_correcao; 
+        curl_close($ch);        
         echo json_encode($result);
     }
 }
